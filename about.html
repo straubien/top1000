@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A propos de la sélection cinéphile de Mathieu Muzard, inspirée par les Notes sur le cinématographe de Bresson.">
+    <title>A propos — Mathieu Muzard's 1000 Essential Films</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1><a href="index.html">Mathieu Muzard's 1000 Essential Films</a></h1>
+    <nav>
+                <a href="index.html">Accueil</a>
+        <a href="about.html" style="color: var(--accent);">A propos</a>
+        <a href="directors.html">Par réalisateur</a>
+        <a href="silents.html">1895–1929</a>
+        <a href="1930s.html">1930s</a>
+        <a href="1940s.html">1940s</a>
+        <a href="1950s.html">1950s</a>
+        <a href="1960s.html">1960s</a>
+        <a href="1970s.html">1970s</a>
+        <a href="1980s.html">1980s</a>
+        <a href="1990s.html">1990s</a>
+        <a href="2000s.html">2000s</a>
+        <a href="2010s.html">2010–2023</a>
+        <a href="en/about.html" class="lang-switch">English version</a>
+    </nav>
+</header>
+<div class="mosaic-banner" id="mosaic-banner"></div>
+<script src="banner.js"></script>
+<main>
+<h2 class="page-title">A propos</h2>
+
+<div class="intro justified">
+    <p>Les « Notes sur le cinématographe » écrites par Bresson décrivent assez bien ce que je recherche dans l’art cinématographique. J’aime les films qui emploient les moyens du cinématographe et se servent de la caméra afin de créer. Autrement dit, pour moi, le cinéma n’est ni de la littérature, ni du théâtre filmé, ni un cliché de photographe, mais « une écriture en mouvement avec des images et des sons » : le mouvement ou l’absence de mouvement d’appareil, le cadre et le montage. Il s’agit là de l’essentiel : le scénario, la photographie, l’interprétation, même si ils ont évidemment leur importance sont de mon point de vue et en conséquence, des éléments secondaires. Je préfère le cinéma qui épie au cinéma qui explique, le cinéma comme art de la réalité plutôt que comme art de l’image, les films qui, comme le disait Daney, « inventent le temps ».</p>
+</div>
+</main>
+<footer>
+    Mathieu Muzard's 1000 Essential Films &middot; 1895&ndash;2023
+</footer>
+<a href="#" class="back-to-top" id="backToTop" aria-label="Retour en haut">&uarr;</a>
+<button class="dark-mode-toggle" id="darkModeToggle" aria-label="Mode sombre">&#9789;</button>
+<script>
+// Back to top
+(function() {
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    btn.style.opacity = window.scrollY > 400 ? '1' : '0';
+    btn.style.pointerEvents = window.scrollY > 400 ? 'auto' : 'none';
+  });
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+// Dark mode
+(function() {
+  var btn = document.getElementById('darkModeToggle');
+  var isDark = localStorage.getItem('darkMode') === 'true';
+  if (isDark) document.body.classList.add('dark-mode');
+  btn.textContent = isDark ? '\u2600' : '\u263D';
+  btn.addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
+    var dark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', dark);
+    btn.textContent = dark ? '\u2600' : '\u263D';
+  });
+})();
+// Page transition
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity 0.4s ease';
+  requestAnimationFrame(function() {
+    document.body.style.opacity = '1';
+  });
+  var links = document.querySelectorAll('a[href]');
+  links.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href.endsWith('.html') && !href.startsWith('http')) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.style.opacity = '0';
+        setTimeout(function() {
+          window.location.href = href;
+        }, 350);
+      });
+    }
+  });
+});
+</script>
+<script data-goatcounter="https://straubien.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
