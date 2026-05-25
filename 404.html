@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+  var path = window.location.pathname;
+  var base = '/top1000';
+  var page = path.replace(base, '').replace(/^\//, '') || 'home';
+  sessionStorage.setItem('redirect', page);
+  window.location.replace('https://straubien.github.io/top1000/');
+</script>
+</head>
+<body></body>
+</html>
