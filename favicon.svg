@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <style>
+    .frame-bg { fill: #ffffff; stroke: #111111; stroke-width: 12; }
+    .perf { fill: #111111; }
+    .inner { fill: none; stroke: #111111; stroke-width: 8; }
+  </style>
+
+  <!-- Cadre principal -->
+  <rect class="frame-bg" x="6" y="6" width="388" height="288" rx="16"/>
+
+  <!-- Zone image centrale -->
+  <rect class="inner" x="56" y="36" width="288" height="228" rx="6"/>
+
+  <!-- Perforations gauche (3) -->
+  <rect class="perf" x="14" y="48"  width="28" height="42" rx="5"/>
+  <rect class="perf" x="14" y="129" width="28" height="42" rx="5"/>
+  <rect class="perf" x="14" y="210" width="28" height="42" rx="5"/>
+
+  <!-- Perforations droite (3) -->
+  <rect class="perf" x="358" y="48"  width="28" height="42" rx="5"/>
+  <rect class="perf" x="358" y="129" width="28" height="42" rx="5"/>
+  <rect class="perf" x="358" y="210" width="28" height="42" rx="5"/>
+</svg>
