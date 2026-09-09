@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Top 1000</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+<header class="admin-header">
+  <h1>Administration — Top 1000</h1>
+  <button id="logoutBtn" class="admin-btn admin-btn--ghost" hidden>Se déconnecter</button>
+</header>
+
+<main id="admin-main" class="admin-main">
+
+  <!-- ── Écran de connexion ── -->
+  <section id="loginScreen" class="admin-panel">
+    <h2>Connexion</h2>
+    <p class="admin-hint">Connectez-vous avec le compte administrateur créé dans Supabase (Authentication → Users).</p>
+    <form id="loginForm" class="admin-form">
+      <label>Email
+        <input type="email" id="loginEmail" required autocomplete="username">
+      </label>
+      <label>Mot de passe
+        <input type="password" id="loginPassword" required autocomplete="current-password">
+      </label>
+      <button type="submit" class="admin-btn">Se connecter</button>
+      <p id="loginError" class="admin-error" hidden></p>
+    </form>
+  </section>
+
+  <!-- ── Interface d'administration ── -->
+  <section id="adminScreen" class="admin-panel" hidden>
+
+    <div id="statusBanner" class="admin-banner" hidden></div>
+
+    <div class="admin-toolbar">
+      <input type="search" id="searchInput" placeholder="Rechercher un film, un réalisateur, une année…" class="admin-search">
+      <span id="resultCount" class="admin-hint"></span>
+      <button id="addFilmBtn" class="admin-btn">+ Ajouter un film</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Année</th>
+            <th>Titre (FR)</th>
+            <th>Réalisateur (FR)</th>
+            <th>Décennie</th>
+            <th>Tier</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="filmsTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Formulaire ajout / édition (couvre tous les champs de la table) ── -->
+<div id="filmModal" class="admin-modal" hidden>
+  <div class="admin-modal-content">
+    <h2 id="filmModalTitle">Ajouter un film</h2>
+    <form id="filmForm" class="admin-form admin-form--grid">
+      <input type="hidden" id="f_id">
+
+      <fieldset>
+        <legend>Titre</legend>
+        <label>Titre (français) *
+          <input type="text" id="f_titre_fr" required>
+        </label>
+        <label>Titre (anglais) *
+          <input type="text" id="f_titre_en" required>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Classement chronologique</legend>
+        <label>Année *
+          <input type="number" id="f_annee" required min="1890" max="2100">
+        </label>
+        <label>Décennie *
+          <select id="f_decennie" required></select>
+        </label>
+        <label>Ordre dans l'année
+          <input type="number" id="f_ordre" value="0">
+          <span class="admin-field-hint">Détermine l'ordre d'affichage entre films de la même année.</span>
+        </label>
+        <label>Tier *
+          <select id="f_tier" required>
+            <option value="top-100">Top 100</option>
+            <option value="top-200">Top 200</option>
+            <option value="top-300">Top 300</option>
+            <option value="top-rest">Top 1000 (reste)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Réalisateur</legend>
+        <label>Nom affiché — réalisateur (français) *
+          <input type="text" id="f_realisateur_fr" required>
+          <span class="admin-field-hint">Nom de famille tel qu'affiché dans "Par réalisateur" (ex. "Akerman").</span>
+        </label>
+        <label>Nom affiché — réalisateur (anglais) *
+          <input type="text" id="f_realisateur_en" required>
+        </label>
+        <label>Prénom du réalisateur
+          <input type="text" id="f_prenom_realisateur">
+        </label>
+        <label class="admin-checkbox-label">
+          <input type="checkbox" id="f_portrait">
+          A un portrait (photo ronde sur la page "Par réalisateur")
+        </label>
+        <label>Nom de fichier du portrait
+          <input type="text" id="f_portrait_file" placeholder="laisser vide pour utiliser le nom du réalisateur">
+          <span class="admin-field-hint">Doit correspondre à un fichier /portraits/portrait-&lt;valeur&gt;.jpg déjà présent dans le dépôt. Cette interface ne téléverse pas d'image.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Affichage dans la liste par décennie</legend>
+        <label>Crédit affiché (français) *
+          <input type="text" id="f_credit_decennie_fr" required>
+          <span class="admin-field-hint">Texte entre parenthèses à côté du titre dans la liste par décennie (ex. "Akerman").</span>
+        </label>
+        <label>Crédit affiché (anglais) *
+          <input type="text" id="f_credit_decennie_en" required>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Note complémentaire (optionnelle)</legend>
+        <label>Note (français)
+          <input type="text" id="f_note_fr" placeholder="ex. (director's cut)">
+        </label>
+        <label>Note (anglais)
+          <input type="text" id="f_note_en">
+        </label>
+      </fieldset>
+
+      <div class="admin-form-actions">
+        <button type="button" id="cancelFilmBtn" class="admin-btn admin-btn--ghost">Annuler</button>
+        <button type="submit" class="admin-btn">Enregistrer</button>
+      </div>
+      <p id="formError" class="admin-error" hidden></p>
+    </form>
+  </div>
+</div>
+
+<!-- ── Confirmation de suppression ── -->
+<div id="deleteModal" class="admin-modal" hidden>
+  <div class="admin-modal-content admin-modal-content--small">
+    <h2>Supprimer ce film ?</h2>
+    <p id="deleteFilmLabel"></p>
+    <p class="admin-hint">Cette action est irréversible.</p>
+    <div class="admin-form-actions">
+      <button type="button" id="cancelDeleteBtn" class="admin-btn admin-btn--ghost">Annuler</button>
+      <button type="button" id="confirmDeleteBtn" class="admin-btn admin-btn--danger">Supprimer définitivement</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
